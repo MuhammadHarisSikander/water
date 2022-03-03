@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import {View,StyleSheet,ImageBackground } from 'react-native'
 import firebase from '../services/firebase'
+// import firebase from 'firebase'
+
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { TextInput,Provider as PaperProvider, DefaultTheme , Button } from 'react-native-paper';
 import Logo from '../component/img/waterlogo.png'
@@ -17,7 +19,9 @@ const theme = {
 
 
 
-const Login = ()=>{
+
+
+const Login = (props)=>{
     const image = Logo
 
     const [email,setEmail] = useState()
@@ -25,6 +29,10 @@ const Login = ()=>{
     const [loader,setLoader] = useState(false)
 
     const auth = getAuth();
+
+    const OnLogout = ()=>{
+    console.log("hello");
+    }
 
 
     const loginUser = ()=>{
@@ -35,6 +43,8 @@ const Login = ()=>{
             setEmail(null)
             setPassword(null)
             setLoader(false)
+            {props.navigation.navigate("Home")}
+            
 
         })
         .catch((err)=>{
@@ -78,10 +88,10 @@ const Login = ()=>{
                 mode={'outlined'}
                 />
                 <View style={{marginBottom:20}} >
-                <Button loading={loader} dark={true} mode='contained' onPress={()=> loginUser()}>LOGIN</Button>
+                <Button loading={loader} dark={true} mode='contained' onPress={()=> {loginUser()}}>LOGIN</Button>
                 </View>
                 <View style={{marginBottom:20}} >
-                <Button loading={loader} dark={true} mode='text' onPress={()=> loginUser()}>SIGN UP HERE</Button>    
+                <Button dark={true} mode='text' onPress={()=> props.navigation.navigate('SignUp')}>SIGN UP HERE</Button>    
                 </View>
             </View>
             

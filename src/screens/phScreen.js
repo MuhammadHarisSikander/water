@@ -1,58 +1,46 @@
-import React,{useState} from 'react'
-import { Text, TouchableOpacity, View, ImageBackground } from 'react-native'
+import React, { useState } from 'react'
+import { Text, TouchableOpacity, View, ImageBackground, TextComponent } from 'react-native'
 import Logo from '../component/img/logo.png'
 import Speedometer from 'react-native-speedometer-chart';
+// import firebase from 'firebase'
+import { getAuth, signOut } from "firebase/auth";
 
 
+const auth = getAuth();
+const PhScreen = (props) => {
+  const image = Logo
+  const OnLogout = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      console.log(auth);
+      props.navigation.navigate('Login')
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+  }
+  const OnWaterPh = () => {
+    props.navigation.navigate('Profile')
+  }
 
-const PhScreen = ()=>{
-    const value = 52
+  return (
+    <View style={{ display: 'flex', justifyContent: 'space-evenly', flex: 1 }} >
+      <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+        <ImageBackground source={image} resizeMode="cover" style={{ width: 300, height: 300, justifyContent: 'center' }}></ImageBackground>
+      </View>
+      <View>
+        <Text style={{ textAlign: 'center', fontSize: 30 }} >
+          SMART AQUA DEVICE
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }} >
+        <TouchableOpacity onPress={() => OnWaterPh()} style={{ borderWidth: 1, padding: 10, borderRadius: 5, backgroundColor: '#ADD8E6', borderColor: '#ADD8E6', width: '40%', alignSelf: 'center' }}><Text style={{ color: 'white', textAlign: 'center' }}> DEVELOPER INFO </Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => OnLogout()} style={{ borderWidth: 1, padding: 10, borderRadius: 5, backgroundColor: '#e25822', borderColor: '#e25822', width: '30%', alignSelf: 'center' }}><Text style={{ color: 'white', textAlign: 'center' }} >Logout</Text></TouchableOpacity>
 
-    const [ fill , setFill ] = useState(null)
-    const image = Logo
+      </View>
 
-    const onValueHandler = () => {
-        setFill(1);
-      };
-
-    return(
-        <View style={{display:'flex',justifyContent:'space-evenly', flex:1}} >
-            <View style={{justifyContent:'center',alignItems:'center'}} >
-              <ImageBackground source={image} resizeMode="cover" style={{flex:1,width:60,height:60,justifyContent:'center'}}></ImageBackground>
-            </View>
-            <Text style={{textAlign:'center',fontSize:40}} >Water-PH Testing</Text>
-
-            <View style={{alignItems:'center'}}>
-                <Text style={{fontSize:20}} >
-                PH-Count: 52
-                </Text>
-            </View>
-
-            <View style={{alignSelf:'center'}}>
-             <Speedometer
-    value={value}
-    showText
-
-    totalValue={150}
-    size={250}
-    outerColor="#d3d3d3"
-    internalColor="#ff0000"
-    showText
-    text={`${value}C°`}
-    textStyle={{ color: 'green' }}
-    showLabels
-    labelStyle={{ color: 'blue' }}
-    // showPercent
-    // percentStyle={{ color: 'red' }}
-    />
     </View>
-
-            <View style={{display:'flex', flexDirection:"row",justifyContent:'space-evenly'}} >
-                <TouchableOpacity onPress={onValueHandler} style={{borderWidth:1,padding:10,borderRadius:5,backgroundColor:'#2e7eff',borderColor:'#2e7eff',width:'30%'}}><Text style={{color:'white',textAlign:'center'}} >Fill-Tank</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>console.log(fill)} style={{borderWidth:1,padding:10,borderRadius:5,backgroundColor:'#ff9d2e',borderColor:'#ff9d2e',width:'30%'}}><Text style={{color:'white',textAlign:'center'}} >Stop-Filling</Text></TouchableOpacity>
-            </View>
-        </View>
-    )
+  )
 
 }
 export default PhScreen;
